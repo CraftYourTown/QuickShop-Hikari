@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
 import com.ghostchu.quickshop.api.event.settings.type.benefit.ShopBenefitEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.inventory.ShopContainerProvider;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
@@ -628,7 +629,7 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     //Setup PDC with new owner
     if (owner.getUniqueId() != null) {
       final Block block = this.location.getBlock();
-      if(block.getState(false) instanceof TileState tileState) {
+      if(allowsBlockMarker() && block.getState(false) instanceof TileState tileState) {
         tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, owner.getUniqueId().toString());
         tileState.update(true);
       }
@@ -1618,7 +1619,23 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     if(this.isDeleted) {
       return false;
     }
-    return Util.canBeShop(this.bukkitLocation().getBlock());
+    final int chunkX = location.getBlockX() >> 4;
+    final int chunkZ = location.getBlockZ() >> 4;
+    if(!location.getWorld().isChunkLoaded(chunkX, chunkZ)) {
+      return true;
+    }
+
+    if(plugin.getInventoryWrapperRegistry().get(inventoryWrapperProvider) == null) {
+      return true;
+    }
+
+    try {
+      return locateInventory(symbolLink).isValid();
+    } catch(final RuntimeException exception) {
+      Log.debug("Cannot validate the Inventory with symbol link: " + symbolLink
+                + ", provider: " + inventoryWrapperProvider);
+      return false;
+    }
   }
 
   /**
@@ -2216,6 +2233,17 @@ public class ContainerShop implements Shop<Double, Location>, Reloadable {
     } catch(final Exception e) {
       throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
     }
+  }
+
+  private boolean allowsBlockMarker() {
+
+    final InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(inventoryWrapperProvider);
+    if(manager == null) {
+      return false;
+    }
+
+    final ShopContainerProvider provider = plugin.getShopContainerProviderRegistry().find(manager);
+    return provider != null && provider.allowsBlockMarker();
   }
 
   @Override

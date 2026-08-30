@@ -16,6 +16,7 @@ import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.ShopContainerProviderRegistry;
 import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.BuiltInRegistry;
@@ -84,6 +85,7 @@ import com.ghostchu.quickshop.shop.display.display.DisplayEntityItemManager;
 import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.interaction.QuickShopInteractionManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import com.ghostchu.quickshop.shop.inventory.BukkitShopContainerProvider;
 import com.ghostchu.quickshop.shop.sign.SignHooker;
 import com.ghostchu.quickshop.shop.tag.QuickShopTagManager;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
@@ -210,6 +212,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   private static PermissionManager permissionManager;
   private final ReloadManager reloadManager = new ReloadManager();
   private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
+  private final ShopContainerProviderRegistry shopContainerProviderRegistry = new ShopContainerProviderRegistry();
   private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
   private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
   private final Map<String, String> addonRegisteredMapping = new HashMap<>();
@@ -395,6 +398,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     loadTextManager();
     logger.info("Register InventoryWrapper...");
     this.inventoryWrapperRegistry.register(javaPlugin, this.inventoryWrapperManager);
+    this.shopContainerProviderRegistry.register(javaPlugin, new BukkitShopContainerProvider(this.inventoryWrapperManager));
     logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
   }
 
@@ -585,6 +589,13 @@ public class QuickShop implements QuickShopAPI, Reloadable {
   public InventoryWrapperRegistry getInventoryWrapperRegistry() {
 
     return inventoryWrapperRegistry;
+  }
+
+  @Override
+  @NotNull
+  public ShopContainerProviderRegistry getShopContainerProviderRegistry() {
+
+    return shopContainerProviderRegistry;
   }
 
   /**

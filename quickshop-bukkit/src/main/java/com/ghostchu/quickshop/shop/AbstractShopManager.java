@@ -372,7 +372,7 @@ public abstract class AbstractShopManager implements ShopManager {
   @Nullable
   public Shop getShop(@NotNull Location loc, final boolean skipShopableChecking) {
 
-    if(!skipShopableChecking && !Util.isShoppables(loc.getBlock().getType())) {
+    if(!skipShopableChecking && !Util.canBeShop(loc.getBlock())) {
       return null;
     }
     final ShopChunk shopChunk = SimpleShopChunk.fromLocation(loc);
@@ -428,28 +428,23 @@ public abstract class AbstractShopManager implements ShopManager {
     // failed, get attached shop
     if(shop == null) {
 
-      final Block block = loc.getBlock();
-      if(!Util.isShoppables(block.getType())) {
-        return null;
-      }
       final Block currentBlock = loc.getBlock();
-      if(!fromAttach) {
-        // sign
-        if(Util.isWallSign(currentBlock.getType())) {
-          final Block attached = Util.getAttached(currentBlock);
-          if(attached != null) {
-            shop = this.findShopIncludeAttached(attached.getLocation(), true);
-          }
-        } else {
-          // optimize for performance
-          final BlockState state = currentBlock.getState(false);
-          if(!(state instanceof InventoryHolder)) {
-            return null;
-          }
-          @Nullable final Block half = Util.getSecondHalf(currentBlock);
-          if(half != null) {
-            shop = getShop(half.getLocation());
-          }
+      if(!fromAttach && Util.isWallSign(currentBlock.getType())) {
+        final Block attached = Util.getAttached(currentBlock);
+        if(attached != null) {
+          shop = this.findShopIncludeAttached(attached.getLocation(), true);
+        }
+      } else if(!Util.canBeShop(currentBlock)) {
+        return null;
+      } else if(!fromAttach) {
+        // Only Bukkit inventory providers can have a second chest half.
+        final BlockState state = currentBlock.getState(false);
+        if(!(state instanceof InventoryHolder)) {
+          return null;
+        }
+        @Nullable final Block half = Util.getSecondHalf(currentBlock);
+        if(half != null) {
+          shop = getShop(half.getLocation());
         }
       }
     }

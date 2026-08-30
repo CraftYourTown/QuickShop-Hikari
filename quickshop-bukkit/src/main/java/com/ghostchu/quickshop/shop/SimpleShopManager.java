@@ -14,6 +14,7 @@ import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.management.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.inventory.ShopContainerProvider;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
 import com.ghostchu.quickshop.api.shop.IShopLayoutProvider;
@@ -570,20 +571,23 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     QuickShop.folia().getScheduler().runAtLocation(info.getLocation(), task -> {
-      final BlockState state = info.getLocation().getBlock().getState(false);
-      if(state instanceof InventoryHolder holder) {
-        // Create the basic shop
-        final String symbolLink;
-        final InventoryWrapperManager manager = plugin.getInventoryWrapperManager();
-        if(manager instanceof BukkitInventoryWrapperManager bukkitInventoryWrapperManager) {
-          symbolLink = bukkitInventoryWrapperManager.mklink(info.getLocation());
-        } else {
-          symbolLink = manager.mklink(new BukkitInventoryWrapper((holder).getInventory()));
+      final Block shopBlock = info.getLocation().getBlock();
+      final ShopContainerProvider containerProvider = plugin.getShopContainerProviderRegistry().resolve(shopBlock);
+      if(containerProvider != null && containerProvider.canCreateShop(p, shopBlock)) {
+        final InventoryWrapperManager manager = containerProvider.getInventoryWrapperManager();
+        final InventoryWrapper wrapper = containerProvider.createInventoryWrapper(shopBlock);
+        final ItemStack shopItem = containerProvider.resolveShopItem(shopBlock, info.getItem());
+        final String wrapperProvider = plugin.getInventoryWrapperRegistry().find(manager);
+        if(wrapperProvider == null) {
+          plugin.logger().error("Shop container provider {} returned an unregistered inventory wrapper manager", containerProvider.getClass().getName());
+          plugin.text().of(p, "invalid-container").send();
+          return;
         }
+        final String symbolLink = manager.mklink(wrapper);
         final ContainerShop shop = new ContainerShop(plugin, -1, info.getLocation(),
-                                                     priceDouble, info.getItem(), createQUser, false,
+                                                     priceDouble, shopItem, createQUser, false,
                                                      SELLING_TYPE, ACTIVE_STATE, new ConcurrentHashMap<>(), null, !plugin.getConfig().getBoolean("shop.display-default", true),
-                                                     null, plugin.getJavaPlugin().getName(),
+                                                     null, wrapperProvider,
                                                      symbolLink,
                                                      null, Collections.emptyMap(), new QSBenefitProvider(), new SimpleShopInventoryCountCache());
         createShop(shop, info.getSignBlock(), info.isBypassed());
@@ -773,7 +777,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       return;
     }
     // Check if target block is allowed shop-block
-    if(!Util.canBeShop(shop.bukkitLocation().getBlock())) {
+    final Block shopBlock = shop.bukkitLocation().getBlock();
+    final ShopContainerProvider containerProvider = plugin.getShopContainerProviderRegistry().resolve(shopBlock);
+    if(containerProvider == null || !containerProvider.canCreateShop(p, shopBlock)) {
       plugin.text().of(p, "chest-was-removed").send();
       return;
     }
@@ -786,22 +792,6 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     if(plugin.isAllowStack() && !plugin.perm().hasPermission(p, "quickshop.create.stacks")) {
       Log.debug("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
       shop.getItem().setAmount(1);
-    }
-
-    // Checking the shop can be created
-    Log.debug("Calling for protection check...");
-
-    // Protection check
-    if(!bypassProtectionCheck) {
-      final Result result = plugin.getPermissionChecker().canBuild(p, shop.bukkitLocation());
-      if(!result.isSuccess()) {
-        plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
-        if(plugin.perm().hasPermission(p, "quickshop.alerts")) {
-          plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
-        }
-        Log.debug("Failed to create shop because protection check failed, found:" + result.getMessage());
-        return;
-      }
     }
 
     // Check if the shop is already created
@@ -861,6 +851,21 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
       case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
       case PASS -> {
 
+        // Protection probes may dispatch synthetic Bukkit events, so only run them after all
+        // side-effect-free validation has accepted the shop request.
+        Log.debug("Calling for protection check...");
+        if(!bypassProtectionCheck) {
+          final Result result = plugin.getPermissionChecker().canBuild(p, shop.bukkitLocation());
+          if(!result.isSuccess()) {
+            plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
+            if(plugin.perm().hasPermission(p, "quickshop.alerts")) {
+              plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
+            }
+            Log.debug("Failed to create shop because protection check failed, found:" + result.getMessage());
+            return;
+          }
+        }
+
         // Calling ShopCreateEvent
         ShopCreateEvent event = new ShopCreateEvent(Phase.PRE_CANCELLABLE, shop, shop.getOwner(), shop.bukkitLocation());
 
@@ -915,7 +920,9 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
 
         //set PDC on shop block
         final Block block = shop.getShopBlock();
-        if(block.getState(false) instanceof TileState tileState) {
+        final ShopContainerProvider markerProvider = plugin.getShopContainerProviderRegistry().resolve(block);
+        if(markerProvider != null && markerProvider.allowsBlockMarker()
+           && block.getState(false) instanceof TileState tileState) {
           if (shop.getOwner().getUniqueId() != null) {
 
             tileState.getPersistentDataContainer().set(CHEST_SHOP_OWNER, PersistentDataType.STRING, shop.getOwner().getUniqueId().toString());
@@ -1452,7 +1459,12 @@ public class SimpleShopManager extends AbstractShopManager implements ShopManage
     }
 
     final Block shopBlock = shop.getShopBlock();
-    if(shopBlock.getState(false) instanceof TileState state) {
+    final InventoryWrapperManager markerManager = plugin.getInventoryWrapperRegistry().get(shop.getInventoryWrapperProvider());
+    final ShopContainerProvider markerProvider = markerManager == null
+            ? null
+            : plugin.getShopContainerProviderRegistry().find(markerManager);
+    if(markerProvider != null && markerProvider.allowsBlockMarker()
+       && shopBlock.getState(false) instanceof TileState state) {
       state.getPersistentDataContainer().remove(CHEST_SHOP);
       state.getPersistentDataContainer().remove(CHEST_SHOP_OWNER);
     }

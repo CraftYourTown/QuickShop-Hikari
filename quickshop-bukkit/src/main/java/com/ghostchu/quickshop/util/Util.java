@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.Phase;
 import com.ghostchu.quickshop.api.event.management.ShopCreateEvent;
 import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.ShopContainerProvider;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.obj.QUser;
@@ -351,6 +352,11 @@ public class Util {
       Log.debug("Invalid shop block");
       return false;
     }
+    final ShopContainerProvider containerProvider = plugin.getShopContainerProviderRegistry().resolve(block);
+    if(containerProvider == null || !containerProvider.canCreateShop(player, block)) {
+      Log.debug("Shop container provider rejected creation access");
+      return false;
+    }
 
     if(plugin.getConfig().getBoolean("disable-quick-create")) {
       Log.debug("quick create disabled");
@@ -430,7 +436,8 @@ public class Util {
     if(event.callCancellableEvent()) {
 
       Log.debug("ShopCreateEvent PRE_CANCELLABLE phase cancelled");
-      return false;
+      plugin.text().of(player, "plugin-cancelled", event.getCancelReason()).send();
+      return true;
     }
 
     plugin.getShopManager().getInteractiveManager().put(player.getUniqueId(), info);
@@ -439,7 +446,7 @@ public class Util {
                      plugin.perm().hasPermission(player, "quickshop.create.stacks")
                      ? stack.getAmount() : 1).send();
     Log.debug("==== Ending Shop Creation ====");
-    return false;
+    return true;
   }
 
   /**
@@ -454,19 +461,7 @@ public class Util {
     if(isBlacklistWorld(b.getWorld())) {
       return false;
     }
-    // Specified types by configuration
-    if(!isShoppables(b.getType())) {
-      return false;
-    }
-    final BlockState bs = b.getState(false);
-    final boolean container = bs instanceof InventoryHolder;
-    if(!container) {
-      if(Util.isDevMode()) {
-        Log.debug(b.getType() + " not a container");
-      }
-      return false;
-    }
-    return true;
+    return plugin.getShopContainerProviderRegistry().resolve(b) != null;
   }
 
   public static boolean canBeShop(@NotNull final Block b, final BlockState bs) {
@@ -475,18 +470,7 @@ public class Util {
       return false;
     }
 
-    // Specified types by configuration
-    if(!isShoppables(b.getType())) {
-      return false;
-    }
-
-    if (!(bs instanceof InventoryHolder)) {
-      if(Util.isDevMode()) {
-        Log.debug(b.getType() + " not a container");
-      }
-      return false;
-    }
-    return true;
+    return plugin.getShopContainerProviderRegistry().resolve(b) != null;
   }
 
   public static boolean isBlacklistWorld(@NotNull final World world) {
@@ -544,7 +528,7 @@ public class Util {
     }
     final ItemMatcher matcher = plugin.getItemMatcher();
     if(inv instanceof CountableInventoryWrapper ciw) {
-      return ciw.countItem(input->matcher.matches(item, input));
+      return ciw.countItem(item.clone(), input->matcher.matches(item, input));
     } else {
       int items = 0;
       for(final ItemStack iStack : inv) {
@@ -574,7 +558,7 @@ public class Util {
       return 0;
     }
     if(inv instanceof CountableInventoryWrapper ciw) {
-      return ciw.countItem(shop::matches);
+      return ciw.countItem(shop.getItem().clone(), shop::matches);
     } else {
       int items = 0;
       for(final ItemStack iStack : inv) {
@@ -604,7 +588,7 @@ public class Util {
       return 0;
     }
     if(inv instanceof CountableInventoryWrapper ciw) {
-      return ciw.countSpace(shop::matches);
+      return ciw.countSpace(shop.getItem().clone(), shop::matches);
     } else {
       final ItemStack item = shop.getItem();
       int space = 0;
@@ -658,7 +642,7 @@ public class Util {
     }
     final ItemMatcher matcher = plugin.getItemMatcher();
     if(inv instanceof CountableInventoryWrapper ciw) {
-      return ciw.countSpace(input->matcher.matches(item, input));
+      return ciw.countSpace(item.clone(), input->matcher.matches(item, input));
     } else {
       int space = 0;
       final int itemMaxStackSize = item.getMaxStackSize();

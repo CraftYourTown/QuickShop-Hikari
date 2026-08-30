@@ -18,6 +18,21 @@ public interface CountableInventoryWrapper extends InventoryWrapper {
   int countItem(@NotNull ItemPredicate predicate);
 
   /**
+   * Counts items while also exposing the immutable template requested by QuickShop.
+   *
+   * <p>Specialized virtual inventories may need the template to calculate exact compatibility.
+   * Existing wrappers retain their predicate-only behavior.</p>
+   *
+   * @param template the requested item template
+   * @param predicate the configured item matcher
+   * @return the matching item count
+   */
+  default int countItem(@NotNull final ItemStack template, @NotNull final ItemPredicate predicate) {
+
+    return countItem(predicate);
+  }
+
+  /**
    * Counting the spaces
    *
    * @param predicate {@link ItemPredicate}
@@ -25,6 +40,18 @@ public interface CountableInventoryWrapper extends InventoryWrapper {
    * @return the space
    */
   int countSpace(@NotNull ItemPredicate predicate);
+
+  /**
+   * Counts capacity while also exposing the immutable template requested by QuickShop.
+   *
+   * @param template the item QuickShop intends to insert
+   * @param predicate the configured item matcher
+   * @return the available capacity
+   */
+  default int countSpace(@NotNull final ItemStack template, @NotNull final ItemPredicate predicate) {
+
+    return countSpace(predicate);
+  }
 
   /**
    * The item predicate for calculating

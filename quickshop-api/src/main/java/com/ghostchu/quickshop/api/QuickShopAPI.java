@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.EconomyManager;
 import com.ghostchu.quickshop.api.hook.Hook;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
+import com.ghostchu.quickshop.api.inventory.ShopContainerProviderRegistry;
 import com.ghostchu.quickshop.api.inventory.SkullProvider;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.registry.RegistryManager;
@@ -152,6 +153,14 @@ public interface QuickShopAPI {
    */
   @NotNull
   InventoryWrapperRegistry getInventoryWrapperRegistry();
+
+  /**
+   * Gets the registry which resolves placed blocks to custom shop containers.
+   *
+   * @return the shop-container provider registry
+   */
+  @NotNull
+  ShopContainerProviderRegistry getShopContainerProviderRegistry();
 
   /**
    * Retrieves the instance of the {@code SkullProvider}, which is responsible for

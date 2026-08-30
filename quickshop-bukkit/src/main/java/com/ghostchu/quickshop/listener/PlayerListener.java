@@ -171,7 +171,7 @@ public class PlayerListener extends AbstractQSListener {
       }
     }
 
-    if(shop == null && b.getState(false) instanceof Container) {
+    if(shop == null && Util.canBeShop(b)) {
 
       return new AbstractMap.SimpleImmutableEntry<>(shop, InteractionClick.CONTAINER);
     }
