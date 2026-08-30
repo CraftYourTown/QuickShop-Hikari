@@ -127,9 +127,7 @@ import com.tcoded.folialib.FoliaLib;
 import com.vdurmont.semver4j.Semver;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.block.implementation.Section;
-import io.papermc.lib.PaperLib;
 import net.tnemc.item.AbstractItemStack;
-import net.tnemc.item.bukkit.BukkitItemStack;
 import net.tnemc.item.bukkit.platform.BukkitHelper;
 import net.tnemc.item.paper.PaperItemStack;
 import net.tnemc.item.platform.registry.BaseHelper;
@@ -476,12 +474,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     logger.info("Loading translations (This may take a while)...");
     try {
       this.textManager = new SimpleTextManager(this);
+      textManager.load();
     } catch(final NoSuchMethodError | NoClassDefFoundError e) {
       logger.error("Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
       Bukkit.getPluginManager().disablePlugin(javaPlugin);
       throw new IllegalStateException("Cannot initialize text manager");
     }
-    textManager.load();
   }
 
   /**
@@ -1426,18 +1424,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
 
   public AbstractItemStack<?> stack() {
 
-    if(PaperLib.isPaper()) {
-      return new PaperItemStack();
-    }
-    return new BukkitItemStack();
+    return new PaperItemStack();
   }
 
   public AbstractItemStack<ItemStack> stack(final ItemStack itemStack) {
 
-    if(PaperLib.isPaper()) {
-      return new PaperItemStack().of(itemStack);
-    }
-    return new BukkitItemStack().of(itemStack);
+    return new PaperItemStack().of(itemStack);
   }
 
   @NotNull
