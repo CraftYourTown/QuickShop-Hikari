@@ -31,29 +31,56 @@
 <span class="source-line-no">018</span><span id="line-18">  int countItem(@NotNull ItemPredicate predicate);</span>
 <span class="source-line-no">019</span><span id="line-19"></span>
 <span class="source-line-no">020</span><span id="line-20">  /**</span>
-<span class="source-line-no">021</span><span id="line-21">   * Counting the spaces</span>
+<span class="source-line-no">021</span><span id="line-21">   * Counts items while also exposing the immutable template requested by QuickShop.</span>
 <span class="source-line-no">022</span><span id="line-22">   *</span>
-<span class="source-line-no">023</span><span id="line-23">   * @param predicate {@link ItemPredicate}</span>
-<span class="source-line-no">024</span><span id="line-24">   *</span>
-<span class="source-line-no">025</span><span id="line-25">   * @return the space</span>
-<span class="source-line-no">026</span><span id="line-26">   */</span>
-<span class="source-line-no">027</span><span id="line-27">  int countSpace(@NotNull ItemPredicate predicate);</span>
-<span class="source-line-no">028</span><span id="line-28"></span>
-<span class="source-line-no">029</span><span id="line-29">  /**</span>
-<span class="source-line-no">030</span><span id="line-30">   * The item predicate for calculating</span>
-<span class="source-line-no">031</span><span id="line-31">   */</span>
-<span class="source-line-no">032</span><span id="line-32">  interface ItemPredicate {</span>
-<span class="source-line-no">033</span><span id="line-33"></span>
-<span class="source-line-no">034</span><span id="line-34">    /**</span>
-<span class="source-line-no">035</span><span id="line-35">     * Check if the item match the predicate</span>
-<span class="source-line-no">036</span><span id="line-36">     *</span>
-<span class="source-line-no">037</span><span id="line-37">     * @param input the item want to check</span>
-<span class="source-line-no">038</span><span id="line-38">     *</span>
-<span class="source-line-no">039</span><span id="line-39">     * @return if the item match the predicate</span>
-<span class="source-line-no">040</span><span id="line-40">     */</span>
-<span class="source-line-no">041</span><span id="line-41">    boolean isMatch(@NotNull ItemStack input);</span>
-<span class="source-line-no">042</span><span id="line-42">  }</span>
-<span class="source-line-no">043</span><span id="line-43">}</span>
+<span class="source-line-no">023</span><span id="line-23">   * &lt;p&gt;Specialized virtual inventories may need the template to calculate exact compatibility.</span>
+<span class="source-line-no">024</span><span id="line-24">   * Existing wrappers retain their predicate-only behavior.&lt;/p&gt;</span>
+<span class="source-line-no">025</span><span id="line-25">   *</span>
+<span class="source-line-no">026</span><span id="line-26">   * @param template the requested item template</span>
+<span class="source-line-no">027</span><span id="line-27">   * @param predicate the configured item matcher</span>
+<span class="source-line-no">028</span><span id="line-28">   * @return the matching item count</span>
+<span class="source-line-no">029</span><span id="line-29">   */</span>
+<span class="source-line-no">030</span><span id="line-30">  default int countItem(@NotNull final ItemStack template, @NotNull final ItemPredicate predicate) {</span>
+<span class="source-line-no">031</span><span id="line-31"></span>
+<span class="source-line-no">032</span><span id="line-32">    return countItem(predicate);</span>
+<span class="source-line-no">033</span><span id="line-33">  }</span>
+<span class="source-line-no">034</span><span id="line-34"></span>
+<span class="source-line-no">035</span><span id="line-35">  /**</span>
+<span class="source-line-no">036</span><span id="line-36">   * Counting the spaces</span>
+<span class="source-line-no">037</span><span id="line-37">   *</span>
+<span class="source-line-no">038</span><span id="line-38">   * @param predicate {@link ItemPredicate}</span>
+<span class="source-line-no">039</span><span id="line-39">   *</span>
+<span class="source-line-no">040</span><span id="line-40">   * @return the space</span>
+<span class="source-line-no">041</span><span id="line-41">   */</span>
+<span class="source-line-no">042</span><span id="line-42">  int countSpace(@NotNull ItemPredicate predicate);</span>
+<span class="source-line-no">043</span><span id="line-43"></span>
+<span class="source-line-no">044</span><span id="line-44">  /**</span>
+<span class="source-line-no">045</span><span id="line-45">   * Counts capacity while also exposing the immutable template requested by QuickShop.</span>
+<span class="source-line-no">046</span><span id="line-46">   *</span>
+<span class="source-line-no">047</span><span id="line-47">   * @param template the item QuickShop intends to insert</span>
+<span class="source-line-no">048</span><span id="line-48">   * @param predicate the configured item matcher</span>
+<span class="source-line-no">049</span><span id="line-49">   * @return the available capacity</span>
+<span class="source-line-no">050</span><span id="line-50">   */</span>
+<span class="source-line-no">051</span><span id="line-51">  default int countSpace(@NotNull final ItemStack template, @NotNull final ItemPredicate predicate) {</span>
+<span class="source-line-no">052</span><span id="line-52"></span>
+<span class="source-line-no">053</span><span id="line-53">    return countSpace(predicate);</span>
+<span class="source-line-no">054</span><span id="line-54">  }</span>
+<span class="source-line-no">055</span><span id="line-55"></span>
+<span class="source-line-no">056</span><span id="line-56">  /**</span>
+<span class="source-line-no">057</span><span id="line-57">   * The item predicate for calculating</span>
+<span class="source-line-no">058</span><span id="line-58">   */</span>
+<span class="source-line-no">059</span><span id="line-59">  interface ItemPredicate {</span>
+<span class="source-line-no">060</span><span id="line-60"></span>
+<span class="source-line-no">061</span><span id="line-61">    /**</span>
+<span class="source-line-no">062</span><span id="line-62">     * Check if the item match the predicate</span>
+<span class="source-line-no">063</span><span id="line-63">     *</span>
+<span class="source-line-no">064</span><span id="line-64">     * @param input the item want to check</span>
+<span class="source-line-no">065</span><span id="line-65">     *</span>
+<span class="source-line-no">066</span><span id="line-66">     * @return if the item match the predicate</span>
+<span class="source-line-no">067</span><span id="line-67">     */</span>
+<span class="source-line-no">068</span><span id="line-68">    boolean isMatch(@NotNull ItemStack input);</span>
+<span class="source-line-no">069</span><span id="line-69">  }</span>
+<span class="source-line-no">070</span><span id="line-70">}</span>
 
 
 

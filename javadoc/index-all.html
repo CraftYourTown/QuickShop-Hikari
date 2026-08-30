@@ -144,6 +144,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#allowEnchants()" class="member-name-link">allowEnchants()</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#allowsBlockMarker()" class="member-name-link">allowsBlockMarker()</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Controls whether QuickShop may write its optimization marker to the physical block state.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/Phase.html#allowUpdate()" class="member-name-link">allowUpdate()</a> - Method in enum class com.ghostchu.quickshop.api.event.<a href="com/ghostchu/quickshop/api/event/Phase.html" title="enum class in com.ghostchu.quickshop.api.event">Phase</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html#ALREADY_EXISTS" class="member-name-link">ALREADY_EXISTS</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.tag.<a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html" title="enum class in com.ghostchu.quickshop.api.shop.tag">TaggingResult</a></dt>
@@ -374,6 +378,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/PhasedEvent.html#cancelReason" class="member-name-link">cancelReason</a> - Variable in class com.ghostchu.quickshop.api.event.<a href="com/ghostchu/quickshop/api/event/PhasedEvent.html" title="class in com.ghostchu.quickshop.api.event">PhasedEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#canCreateShop(org.bukkit.entity.Player,org.bukkit.block.Block)" class="member-name-link">canCreateShop(Player, Block)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Performs a provider-specific access check during shop creation.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/hook/Hook.html#canEnable()" class="member-name-link">canEnable()</a> - Method in interface com.ghostchu.quickshop.api.hook.<a href="com/ghostchu/quickshop/api/hook/Hook.html" title="interface in com.ghostchu.quickshop.api.hook">Hook</a></dt>
 <dd>
 <div class="block">Checks whether the hook is currently enabled.</div>
@@ -872,9 +880,17 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Counting the items</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html#countItem(org.bukkit.inventory.ItemStack,com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper.ItemPredicate)" class="member-name-link">countItem(ItemStack, CountableInventoryWrapper.ItemPredicate)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">CountableInventoryWrapper</a></dt>
+<dd>
+<div class="block">Counts items while also exposing the immutable template requested by QuickShop.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html#countSpace(com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper.ItemPredicate)" class="member-name-link">countSpace(CountableInventoryWrapper.ItemPredicate)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">CountableInventoryWrapper</a></dt>
 <dd>
 <div class="block">Counting the spaces</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html#countSpace(org.bukkit.inventory.ItemStack,com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper.ItemPredicate)" class="member-name-link">countSpace(ItemStack, CountableInventoryWrapper.ItemPredicate)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/CountableInventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">CountableInventoryWrapper</a></dt>
+<dd>
+<div class="block">Counts capacity while also exposing the immutable template requested by QuickShop.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html#create(com.ghostchu.quickshop.api.shop.Shop)" class="member-name-link">create(Shop)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/DisplayManager.html" title="interface in com.ghostchu.quickshop.api.shop.display">DisplayManager</a></dt>
 <dd>
@@ -893,6 +909,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/shop/display/PacketFactory.html#createDestroyPacket(int)" class="member-name-link">createDestroyPacket(int)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/PacketFactory.html" title="interface in com.ghostchu.quickshop.api.shop.display">PacketFactory</a></dt>
 <dd>
 <div class="block">Creates a destroy packet for the given ID.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#createInventoryWrapper(org.bukkit.block.Block)" class="member-name-link">createInventoryWrapper(Block)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Creates a wrapper for the supplied block.</div>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/display/PacketFactory.html#createMetaDataPacket(int,org.bukkit.inventory.ItemStack)" class="member-name-link">createMetaDataPacket(int, ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.shop.display.<a href="com/ghostchu/quickshop/api/shop/display/PacketFactory.html" title="interface in com.ghostchu.quickshop.api.shop.display">PacketFactory</a></dt>
 <dd>
@@ -1210,6 +1230,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/query/Filters.html#%3Cinit%3E()" class="member-name-link">Filters()</a> - Constructor for class com.ghostchu.quickshop.api.shop.query.<a href="com/ghostchu/quickshop/api/shop/query/Filters.html" title="class in com.ghostchu.quickshop.api.shop.query">Filters</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html#find(com.ghostchu.quickshop.api.inventory.InventoryWrapperManager)" class="member-name-link">find(InventoryWrapperManager)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a></dt>
+<dd>
+<div class="block">Finds the provider associated with an inventory-wrapper manager.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html#find(com.ghostchu.quickshop.api.inventory.InventoryWrapperManager)" class="member-name-link">find(InventoryWrapperManager)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.html#findCooldown()" class="member-name-link">findCooldown()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager</a></dt>
@@ -1662,6 +1686,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gets new InventoryWrapper.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#getInventoryWrapperManager()" class="member-name-link">getInventoryWrapperManager()</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Gets the manager used to persist and later locate this provider's wrappers.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopInfoStorage.html#getInventoryWrapperName()" class="member-name-link">getInventoryWrapperName()</a> - Method in class com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopInfoStorage.html" title="class in com.ghostchu.quickshop.api.shop">ShopInfoStorage</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/inventory/ShopInventory.html#getInventoryWrapperProvider()" class="member-name-link">getInventoryWrapperProvider()</a> - Method in interface com.ghostchu.quickshop.api.shop.inventory.<a href="com/ghostchu/quickshop/api/shop/inventory/ShopInventory.html" title="interface in com.ghostchu.quickshop.api.shop.inventory">ShopInventory</a></dt>
@@ -2050,6 +2078,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html#getShopChunk()" class="member-name-link">getShopChunk()</a> - Method in class com.ghostchu.quickshop.api.event.display.<a href="com/ghostchu/quickshop/api/event/display/DisplayManagerRemoveEvent.html" title="class in com.ghostchu.quickshop.api.event.display">DisplayManagerRemoveEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/QuickShopAPI.html#getShopContainerProviderRegistry()" class="member-name-link">getShopContainerProviderRegistry()</a> - Method in interface com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></dt>
+<dd>
+<div class="block">Gets the registry which resolves placed blocks to custom shop containers.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/QuickShopAPI.html#getShopControlPanelManager()" class="member-name-link">getShopControlPanelManager()</a> - Method in interface com.ghostchu.quickshop.api.<a href="com/ghostchu/quickshop/api/QuickShopAPI.html" title="interface in com.ghostchu.quickshop.api">QuickShopAPI</a></dt>
 <dd>
 <div class="block">Getting the control panel manager</div>
@@ -3854,6 +3886,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gets the PriceLimiter status.</div>
 </dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#priority()" class="member-name-link">priority()</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Gets this provider's resolution priority.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/localization/text/postprocessor/PostProcessor.html#process(net.kyori.adventure.text.Component,org.bukkit.command.CommandSender,net.kyori.adventure.text.Component...)" class="member-name-link">process(Component, CommandSender, Component...)</a> - Method in interface com.ghostchu.quickshop.api.localization.text.postprocessor.<a href="com/ghostchu/quickshop/api/localization/text/postprocessor/PostProcessor.html" title="interface in com.ghostchu.quickshop.api.localization.text.postprocessor">PostProcessor</a></dt>
 <dd>
 <div class="block">Process the string</div>
@@ -4019,6 +4055,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html#register(org.bukkit.plugin.Plugin,com.ghostchu.quickshop.api.inventory.InventoryWrapperManager)" class="member-name-link">register(Plugin, InventoryWrapperManager)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html#register(org.bukkit.plugin.Plugin,com.ghostchu.quickshop.api.inventory.ShopContainerProvider)" class="member-name-link">register(Plugin, ShopContainerProvider)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a></dt>
+<dd>
+<div class="block">Registers a provider owned by a plugin.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/command/CommandManager.html#registerCmd(com.ghostchu.quickshop.api.command.CommandContainer)" class="member-name-link">registerCmd(CommandContainer)</a> - Method in interface com.ghostchu.quickshop.api.command.<a href="com/ghostchu/quickshop/api/command/CommandManager.html" title="interface in com.ghostchu.quickshop.api.command">CommandManager</a></dt>
 <dd>
 <div class="block">This is a interface to allow addons to register the subcommand into quickshop command manager.</div>
@@ -4285,6 +4325,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html#reset()" class="member-name-link">reset()</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopManager.InteractiveManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopManager.InteractiveManager</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html#resolve(org.bukkit.block.Block)" class="member-name-link">resolve(Block)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a></dt>
+<dd>
+<div class="block">Resolves the provider responsible for a block.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#resolveShopItem(org.bukkit.block.Block,org.bukkit.inventory.ItemStack)" class="member-name-link">resolveShopItem(Block, ItemStack)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Resolves the item stored on a newly created shop.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/InventoryWrapper.html#restoreSnapshot(org.bukkit.inventory.ItemStack%5B%5D)" class="member-name-link">restoreSnapshot(ItemStack[])</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/InventoryWrapper.html" title="interface in com.ghostchu.quickshop.api.inventory">InventoryWrapper</a></dt>
 <dd>
 <div class="block">Rollback Inventory by a snapshot.</div>
@@ -4835,6 +4883,16 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/ghostchu/quickshop/api/event/management/ShopClickEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.event.Phase,com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.obj.QUser)" class="member-name-link">ShopClickEvent(Phase, Shop, QUser)</a> - Constructor for class com.ghostchu.quickshop.api.event.management.<a href="com/ghostchu/quickshop/api/event/management/ShopClickEvent.html" title="class in com.ghostchu.quickshop.api.event.management">ShopClickEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/event/management/ShopClickEvent.html#%3Cinit%3E(com.ghostchu.quickshop.api.shop.Shop,com.ghostchu.quickshop.api.obj.QUser)" class="member-name-link">ShopClickEvent(Shop, QUser)</a> - Constructor for class com.ghostchu.quickshop.api.event.management.<a href="com/ghostchu/quickshop/api/event/management/ShopClickEvent.html" title="class in com.ghostchu.quickshop.api.event.management">ShopClickEvent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a> - Interface in <a href="com/ghostchu/quickshop/api/inventory/package-summary.html">com.ghostchu.quickshop.api.inventory</a></dt>
+<dd>
+<div class="block">Resolves a placed block to the inventory wrapper used by a QuickShop.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" class="type-name-link" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a> - Class in <a href="com/ghostchu/quickshop/api/inventory/package-summary.html">com.ghostchu.quickshop.api.inventory</a></dt>
+<dd>
+<div class="block">Stores the block-container providers available to QuickShop.</div>
+</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html#%3Cinit%3E()" class="member-name-link">ShopContainerProviderRegistry()</a> - Constructor for class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopControlPanel.html" class="type-name-link" title="interface in com.ghostchu.quickshop.api.shop">ShopControlPanel</a> - Interface in <a href="com/ghostchu/quickshop/api/shop/package-summary.html">com.ghostchu.quickshop.api.shop</a></dt>
 <dd>
@@ -5397,6 +5455,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html#SUCCESS" class="member-name-link">SUCCESS</a> - Enum constant in enum class com.ghostchu.quickshop.api.shop.tag.<a href="com/ghostchu/quickshop/api/shop/tag/TaggingResult.html" title="enum class in com.ghostchu.quickshop.api.shop.tag">TaggingResult</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html#supports(org.bukkit.block.Block)" class="member-name-link">supports(Block)</a> - Method in interface com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProvider.html" title="interface in com.ghostchu.quickshop.api.inventory">ShopContainerProvider</a></dt>
+<dd>
+<div class="block">Checks whether this provider owns the supplied block.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html#supportsCurrency(java.lang.String,java.lang.String)" class="member-name-link">supportsCurrency(String, String)</a> - Method in interface com.ghostchu.quickshop.api.economy.<a href="com/ghostchu/quickshop/api/economy/EconomyProvider.html" title="interface in com.ghostchu.quickshop.api.economy">EconomyProvider</a></dt>
 <dd>
 <div class="block">Check if the EconomyProvider supports the given currency in the given world.</div>
@@ -5773,6 +5835,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html#unregister(org.bukkit.plugin.Plugin)" class="member-name-link">unregister(Plugin)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/InventoryWrapperRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">InventoryWrapperRegistry</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html#unregister(org.bukkit.plugin.Plugin)" class="member-name-link">unregister(Plugin)</a> - Method in class com.ghostchu.quickshop.api.inventory.<a href="com/ghostchu/quickshop/api/inventory/ShopContainerProviderRegistry.html" title="class in com.ghostchu.quickshop.api.inventory">ShopContainerProviderRegistry</a></dt>
+<dd>
+<div class="block">Removes every provider registered by a plugin.</div>
+</dd>
 <dt><a href="com/ghostchu/quickshop/api/shop/ShopControlPanelManager.html#unregister(org.bukkit.plugin.Plugin)" class="member-name-link">unregister(Plugin)</a> - Method in interface com.ghostchu.quickshop.api.shop.<a href="com/ghostchu/quickshop/api/shop/ShopControlPanelManager.html" title="interface in com.ghostchu.quickshop.api.shop">ShopControlPanelManager</a></dt>
 <dd>
 <div class="block">Unregister all <a href="com/ghostchu/quickshop/api/shop/ShopControlPanel.html" title="interface in com.ghostchu.quickshop.api.shop"><code>ShopControlPanel</code></a> from the manager that registered by specified plugin</div>
