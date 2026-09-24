@@ -72,7 +72,10 @@ public class TradeUI implements InteractionBehavior {
   public void handle(final @NotNull QuickShopAPI plugin, final @Nullable Shop shop, final @NotNull Player player, final @NotNull PlayerInteractEvent event, final @NotNull InteractionClick clickType, final @Nullable InteractionType interaction) {
 
     if(shop == null) {
-      if(event.getItem() != null && event.getHand() != null && Util.createShop(event.getPlayer(),
+      if(event.getItem() != null
+          && event.getHand() != null
+          && !Util.isTool(event.getItem().getType())
+          && Util.createShop(event.getPlayer(),
                                                                                event.getClickedBlock(),
                                                                                event.getBlockFace(),
                                                                                event.getHand(),
